@@ -47,10 +47,10 @@ void setup() {
   tft.setTextColor(BLACK);  tft.setTextSize(2); // The size is a little more than 10 pixels
   tft.println("RPMs");                          // prints the text at the location of the cursor
   tft.setCursor(40, 215);   tft.setTextSize(6); // sets cursor for the number value variablle
-  tft.println("45");
-  tft.drawFastVLine(39, 214, 43, RED);
-  tft.drawFastHLine(39, 257, 67, RED);
-  tft.drawFastHLine(39, 214, 67, RED);
+  tft.println("45");                            // The test variable
+  tft.drawFastVLine(39, 214, 43, RED);          // The next few lines of code were written get the width and height of the
+  tft.drawFastHLine(39, 257, 67, RED);          // double-digit numbers in each section so they can be covered with a white 
+  tft.drawFastHLine(39, 214, 67, RED);          // rectangle to be updated
   tft.drawFastVLine(106, 214, 43, RED);
 
   // Box 2 (top left)
