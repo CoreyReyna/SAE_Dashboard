@@ -1,0 +1,123 @@
+
+
+//#define LCD_CS A3 // Chip Select goes to Analog 3
+//#define LCD_CD A2 // Command/Data goes to Analog 2
+//#define LCD_WR A1 // LCD Write goes to Analog 1
+//#define LCD_RD A0 // LCD Read goes to Analog 0
+//#define LCD_RESET A4 // Can alternately just connect to Arduino's reset pin
+
+#include <SPI.h>          // f.k. for Arduino-1.5.2
+#include "Adafruit_GFX.h"// Hardware-specific library
+#include <MCUFRIEND_kbv.h>
+//#include <TFT.h>;   Can't add this library and Adafruit_GFX.h because they do many similar things
+MCUFRIEND_kbv tft;
+//#include <Adafruit_TFTLCD.h>
+//Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
+
+// Assign human-readable names to some common 16-bit color values:
+#define	BLACK   0x0000
+#define	BLUE    0x001F
+#define	RED     0xF800
+#define	GREEN   0x07E0
+#define CYAN    0x07FF
+#define MAGENTA 0xF81F
+#define YELLOW  0xFFE0
+#define WHITE   0xFFFF
+//#define test_value analogRead(A15)
+
+  int RPM_value = 0;
+  int coolant_value = 0;
+  int accelerometer_value = 0;
+  int tire_temp_valeu = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  uint16_t ID = tft.readID();   // Find the ID of the diplay being used
+  tft.begin(ID);                // initialize the display being used with its appropriate ID
+  tft.setRotation(1);           // Rotates the screen so it is in landscape mode
+  tft.fillScreen(WHITE);        // setting the back ground white 
+  tft.drawFastVLine(160, 0, 320, BLACK);   // Drawing the vertical line to split the display in three parts   
+  tft.drawFastVLine(320, 0, 320, BLACK);   // Drawing the vertical line to split the display in three parts
+  tft.drawFastHLine(0, 160, 480, BLACK);   // Drawing the Horizontal lines to seperate the display into 6 parts
+  tft.setTextColor(BLACK);                 // settign the color of the lines
+
+  // Box 1 (bottom left)
+  tft.setCursor(55, 300);                       // the cursor sets the beginning for the text
+  tft.setTextColor(BLACK);  tft.setTextSize(2); // The size is a little more than 10 pixels
+  tft.println("RPMs");                          // prints the text at the location of the cursor
+  tft.setCursor(40, 215);   tft.setTextSize(6); // sets cursor for the number value variablle
+  tft.println("45");
+  tft.drawFastVLine(39, 214, 43, RED);
+  tft.drawFastHLine(39, 257, 67, RED);
+  tft.drawFastHLine(39, 214, 67, RED);
+  tft.drawFastVLine(106, 214, 43, RED);
+
+  // Box 2 (top left)
+  tft.setCursor(20, 140);
+  tft.setTextColor(BLACK);  tft.setTextSize(2);
+  tft.println("Coolant (T)");
+  tft.setCursor(40, 55);   tft.setTextSize(6); // sets cursor for the number value variablle
+  tft.println("45");
+
+  // Box 3 (bottom middle)
+  tft.setCursor(215, 300);
+  tft.setTextColor(BLACK);  tft.setTextSize(2);
+  tft.println("ACC");
+  tft.setCursor(200, 215);   tft.setTextSize(6); // sets cursor for the number value variablle
+  tft.println("45");
+
+  // Box 4 (top middle)
+  tft.setCursor(195, 140);
+  tft.setTextColor(BLACK);  tft.setTextSize(2);
+  tft.println("Brake (T)");
+  tft.setCursor(200, 55);   tft.setTextSize(6); // sets cursor for the number value variablle
+  tft.println("45");
+
+  // Box 5 (bottom right)
+  tft.setCursor(345, 300);
+  tft.setTextColor(BLACK);  tft.setTextSize(2);
+  tft.println("Tire (T)");
+  tft.setCursor(360, 215);   tft.setTextSize(6); // sets cursor for the number value variablle
+  tft.println("45");
+
+  // Box 6 (top right)
+  tft.setCursor(345, 140);
+  tft.setTextColor(BLACK);  tft.setTextSize(2);
+  tft.println("Blast Off");
+  tft.setCursor(360, 55);   tft.setTextSize(6); // sets cursor for the number value variablle
+  tft.println("45");
+
+
+}
+
+void loop() 
+{
+  delay(1500);
+  update_RPMs();
+  update_coolant();
+  //tft.setCursor(40, 215); tft.setTextSize(6);
+  //tft.println("65");
+
+}
+
+
+void update_RPMs()
+{
+
+  tft.fillRect(38, 213, 70, 45, WHITE);
+  tft.setCursor(40, 215);   tft.setTextSize(6); // sets cursor for the number value variablle
+  //tft.println((test_value*.00488));
+  tft.println(RPM_value);
+  RPM_value++;
+}
+
+void update_coolant()
+{
+  
+  tft.fillRect(38, 54, 70, 45, WHITE);
+  tft.setCursor(40, 55);  tft.setTextSize(6);
+  tft.println(coolant_value);
+  coolant_value = ((coolant_value++) + 1);
+
+}
