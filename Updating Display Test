@@ -23,7 +23,7 @@ MCUFRIEND_kbv tft;
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
-//#define test_value analogRead(A15)
+//#define test_value analogRead(A15)   // Used to read in votlage values on a spectrum from 1-1024 (0-5V)
 
   int RPM_value = 0;
   int coolant_value = 0;
@@ -32,7 +32,7 @@ MCUFRIEND_kbv tft;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(9600);           // Initializese the data transfer rate to 9600 bits persecond
   uint16_t ID = tft.readID();   // Find the ID of the diplay being used
   tft.begin(ID);                // initialize the display being used with its appropriate ID
   tft.setRotation(1);           // Rotates the screen so it is in landscape mode
